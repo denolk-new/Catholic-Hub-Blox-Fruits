@@ -1,3 +1,27 @@
+local functions = {
+  rconsoleprint,
+  print,
+  setclipboard,
+  rconsoleerr,
+  rconsolewarn,
+  warn,
+  error
+}
+
+game:GetService('RunService').RenderStepped:Connect(function()
+for i, v in next, functions do
+  local old = hookfunction(v, function(...)
+   local args = {...}
+   for i, v in next, args do
+     if tostring(i):find("https://") or tostring(v):find("https://") then
+       game.Players.LocalPlayer:Kick("HttpSpy Detected!")
+     end
+   end
+   return old(...)
+  end)
+end
+end)
+
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/realredz/RedzLibV5/main/Source.lua"))()
 
 local Window = Library:MakeWindow({
